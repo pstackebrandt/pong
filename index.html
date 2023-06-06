@@ -1,116 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>HTML5 Canvas Pong Game</title>
-        <link rel="stylesheet" href="style.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
+
+<head>
+    <meta charset="utf-8">
+    <title>HTML5 Canvas Pong Game</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
 <body>
-<canvas id="pongCanvas" width="800" height="400" style="background-color:#000"></canvas>
+    <canvas id="pongCanvas"></canvas>
 
-<script>
-var canvas = document.getElementById("pongCanvas");
-var ctx = canvas.getContext("2d");
+    <script>
+        var canvas = document.getElementById("pongCanvas");
+        var ctx = canvas.getContext("2d");
 
-// Parameter
-var ball = {x: canvas.width/2, y: canvas.height/2, dx: 2, dy: 2, radius: 10};
-var paddleHeight = 80;
-var paddleWidth = 10;
-var paddleY = (canvas.height - paddleHeight) / 2;
-var paddle2Y = paddleY;
-var paddleSpeed = 2;
+        // Parameter
+        var ball = { x: canvas.width / 2, y: canvas.height / 2, dx: 2, dy: 2, radius: 10 };
+        var paddleHeight = 80;
+        var paddleWidth = 10;
+        var paddleY = (canvas.height - paddleHeight) / 2;
+        var paddle2Y = paddleY;
+        var paddleSpeed = 2;
 
-// Spielsteuerung
-var wPress = false;
-var sPress = false;
-var upPress = false;
-var downPress = false;
+        // Spielsteuerung
+        var wPress = false;
+        var sPress = false;
+        var upPress = false;
+        var downPress = false;
 
-// Event-Listener
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
+        // Event-Listener
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
 
-function keyDownHandler(e) {
-    if(e.key == "s" || e.key == "S") {sPress = true;}
-    if(e.key == "w" || e.key == "W") {wPress = true;}
-    if(e.key == "Up" || e.key == "ArrowUp") {upPress = true;}
-    if(e.key == "Down" || e.key == "ArrowDown") {downPress = true;}
-}
+        function keyDownHandler(e) {
+            if (e.key == "s" || e.key == "S") { sPress = true; }
+            if (e.key == "w" || e.key == "W") { wPress = true; }
+            if (e.key == "Up" || e.key == "ArrowUp") { upPress = true; }
+            if (e.key == "Down" || e.key == "ArrowDown") { downPress = true; }
+        }
 
-function keyUpHandler(e) {
-    if(e.key == "s" || e.key == "S") {sPress = false;}
-    if(e.key == "w" || e.key == "W") {wPress = false;}
-    if(e.key == "Up" || e.key == "ArrowUp") {upPress = false;}
-    if(e.key == "Down" || e.key == "ArrowDown") {downPress = false;}
-}
+        function keyUpHandler(e) {
+            if (e.key == "s" || e.key == "S") { sPress = false; }
+            if (e.key == "w" || e.key == "W") { wPress = false; }
+            if (e.key == "Up" || e.key == "ArrowUp") { upPress = false; }
+            if (e.key == "Down" || e.key == "ArrowDown") { downPress = false; }
+        }
 
-// Zeichne Ball
-function drawBall() {
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
-    ctx.fillStyle = "#FFF";
-    ctx.fill();
-    ctx.closePath();
-}
+        // Zeichne Ball
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = "#FFF";
+            ctx.fill();
+            ctx.closePath();
+        }
 
-// Zeichne Schläger
-function drawPaddle(x, y) {
-    ctx.beginPath();
-    ctx.rect(x, y, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#FFF";
-    ctx.fill();
-    ctx.closePath();
-}
+        // Zeichne Schläger
+        function drawPaddle(x, y) {
+            ctx.beginPath();
+            ctx.rect(x, y, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#FFF";
+            ctx.fill();
+            ctx.closePath();
+        }
 
-// Hauptzeichnen-Funktion
-function draw() {
-    // Bereinige Canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBall();
-    drawPaddle(0, paddleY);
-    drawPaddle(canvas.width-paddleWidth, paddle2Y);
-    ball.x += ball.dx;
-    ball.y += ball.dy;
+        // Hauptzeichnen-Funktion
+        function draw() {
+            // Bereinige Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBall();
+            drawPaddle(0, paddleY);
+            drawPaddle(canvas.width - paddleWidth, paddle2Y);
+            ball.x += ball.dx;
+            ball.y += ball.dy;
 
-    // Bewegung Spieler
-    if(wPress) {paddleY -= paddleSpeed;}
-    if(sPress) {paddleY += paddleSpeed;}
-    if(upPress) {paddle2Y -= paddleSpeed;}
-    if(downPress) {paddle2Y += paddleSpeed;}
+            // Bewegung Spieler
+            if (wPress) { paddleY -= paddleSpeed; }
+            if (sPress) { paddleY += paddleSpeed; }
+            if (upPress) { paddle2Y -= paddleSpeed; }
+            if (downPress) { paddle2Y += paddleSpeed; }
 
-    // Begrenze Bewegung
-    if(paddleY < 0) {paddleY = 0;}
-    if(paddleY > canvas.height - paddleHeight) {paddleY = canvas.height - paddleHeight;}
-    if(paddle2Y < 0) {paddle2Y = 0;}
-    if(paddle2Y > canvas.height - paddleHeight) {paddle2Y = canvas.height - paddleHeight;}
+            // Begrenze Bewegung
+            if (paddleY < 0) { paddleY = 0; }
+            if (paddleY > canvas.height - paddleHeight) { paddleY = canvas.height - paddleHeight; }
+            if (paddle2Y < 0) { paddle2Y = 0; }
+            if (paddle2Y > canvas.height - paddleHeight) { paddle2Y = canvas.height - paddleHeight; }
 
-    // Ball-Interaktion
-    if(ball.y + ball.dy < ball.radius) {ball.dy = -ball.dy;}
-    if(ball.y + ball.dy > canvas.height-ball.radius) {
+            // Ball-Interaktion
+            if (ball.y + ball.dy < ball.radius) { ball.dy = -ball.dy; }
+            if (ball.y + ball.dy > canvas.height - ball.radius) {
 
-ball.dy = -ball.dy;}
-    if(ball.x + ball.dx < ball.radius) {
-        if(ball.y > paddleY && ball.y < paddleY + paddleHeight) {ball.dx = -ball.dx;}
-        else {console.log('Spieler 2 Punkte'); reset();}
-    }
-    if(ball.x + ball.dx > canvas.width-ball.radius) {
-        if(ball.y > paddle2Y && ball.y < paddle2Y + paddleHeight) {ball.dx = -ball.dx;}
-        else {console.log('Spieler 1 Punkte'); reset();}
-    }
-}
+                ball.dy = -ball.dy;
+            }
+            if (ball.x + ball.dx < ball.radius) {
+                if (ball.y > paddleY && ball.y < paddleY + paddleHeight) { ball.dx = -ball.dx; }
+                else { console.log('Spieler 2 Punkte'); reset(); }
+            }
+            if (ball.x + ball.dx > canvas.width - ball.radius) {
+                if (ball.y > paddle2Y && ball.y < paddle2Y + paddleHeight) { ball.dx = -ball.dx; }
+                else { console.log('Spieler 1 Punkte'); reset(); }
+            }
+        }
 
-// Spiel-Reset
-function reset() {
-    ball.x = canvas.width/2;
-    ball.y = canvas.height/2;
-    ball.dx = 2;
-    ball.dy = 2;
-}
+        // Spiel-Reset
+        function reset() {
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+            ball.dx = 2;
+            ball.dy = 2;
+        }
 
-// Aufruf Zeichnen-Funktion
-setInterval(draw, 10);
-</script>
+        // Aufruf Zeichnen-Funktion
+        setInterval(draw, 10);
+    </script>
 
 </body>
+
 </html>
